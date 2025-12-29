@@ -1,22 +1,26 @@
 class AudioService {
-  private audioContext: AudioContext | null = null;
-  private masterGain: GainNode | null = null;
+  private audioContext: AudioContext;
+  private masterGain: GainNode;
 
-  private init() {
-    if (!this.audioContext) {
-      this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-      this.masterGain = this.audioContext.createGain();
-      this.masterGain.gain.value = 0.5; // Master volume
-      this.masterGain.connect(this.audioContext.destination);
-    }
+  constructor() {
+    // Initialize immediately to avoid allocation delay on first user interaction
+    const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+    this.audioContext = new AudioContextClass();
+    
+    this.masterGain = this.audioContext.createGain();
+    this.masterGain.gain.value = 0.5; // Master volume
+    this.masterGain.connect(this.audioContext.destination);
+  }
+
+  public resume() {
     if (this.audioContext.state === 'suspended') {
-      this.audioContext.resume();
+      this.audioContext.resume().catch(err => console.error("AudioContext resume failed", err));
     }
   }
 
   public playTone(frequency: number, duration: number = 1.5) {
-    this.init();
-    if (!this.audioContext || !this.masterGain) return;
+    // Ensure context is running. Calling this multiple times is safe/cheap.
+    this.resume();
 
     const osc = this.audioContext.createOscillator();
     const gainNode = this.audioContext.createGain();

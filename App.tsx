@@ -1,12 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import Piano from './components/Piano';
 import { NoteName } from './types';
+import { audioService } from './services/audioService';
 
 function App() {
   const [lastPlayedNote, setLastPlayedNote] = useState<NoteName | null>(null);
 
+  // Warm up the audio engine on any interaction with the app
+  const handleUserInteraction = useCallback(() => {
+    audioService.resume();
+  }, []);
+
   return (
-    <div className="min-h-screen bg-slate-900 flex flex-col items-center p-6 md:p-12">
+    <div 
+      className="min-h-screen bg-slate-900 flex flex-col items-center p-6 md:p-12"
+      onMouseDown={handleUserInteraction}
+      onTouchStart={handleUserInteraction}
+      onKeyDown={handleUserInteraction}
+    >
       
       {/* Header */}
       <header className="mb-12 text-center space-y-4">
