@@ -11,13 +11,3 @@ export interface NoteDefinition {
 export interface PlayableNote extends NoteDefinition {
   isPlaying: boolean;
 }
-
-export interface MelodyRequest {
-  mood: string;
-}
-
-export interface GeneratedMelody {
-  title: string;
-  notes: NoteName[];
-  description: string;
-}

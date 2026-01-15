@@ -16,11 +16,3 @@ export const OCTAVE_DATA: NoteDefinition[] = [
   { name: 'B', frequency: 493.88, type: 'white', label: 'B' },
   { name: 'C5', frequency: 523.25, type: 'white', label: 'C' }, // High C
 ];
-
-export const MOOD_OPTIONS = [
-  "Happy & Upbeat",
-  "Melancholy & Slow",
-  "Spooky & Mysterious",
-  "Energetic & Fast",
-  "Calm & Lullaby"
-];
